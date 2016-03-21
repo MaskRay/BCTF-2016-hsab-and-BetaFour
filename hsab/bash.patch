@@ -1,0 +1,72 @@
+--- a/builtins/read.def	2016-03-15 21:27:47.873394132 +0800
++++ b/builtins/read.def	2016-03-15 21:27:51.416598689 +0800
+@@ -201,6 +201,8 @@
+   int rlind;
+ #endif
+ 
++  return 0;
++
+   USE_VAR(size);
+   USE_VAR(i);
+   USE_VAR(pass_next);
+--- a/builtins/mapfile.def	2016-03-15 21:27:08.544823512 +0800
++++ b/builtins/mapfile.def	2016-03-15 21:27:10.794741739 +0800
+@@ -249,6 +249,8 @@
+   long lines, origin, nskip, callback_quantum;
+   char *array_name, *callback;
+ 
++  return 0;
++
+   clear_array = 1;
+   fd = 0;
+   lines = origin = nskip = 0;
+--- a/parse.y	2016-03-15 21:32:51.215702612 +0800
++++ b/parse.y	2016-03-15 21:34:47.691469348 +0800
+@@ -438,36 +438,18 @@
+ 			  redir.filename = $2;
+ 			  $$ = make_redirection (source, r_output_direction, redir, 0);
+ 			}
+-	|	'<' WORD
+-			{
+-			  source.dest = 0;
+-			  redir.filename = $2;
+-			  $$ = make_redirection (source, r_input_direction, redir, 0);
+-			}
+ 	|	NUMBER '>' WORD
+ 			{
+ 			  source.dest = $1;
+ 			  redir.filename = $3;
+ 			  $$ = make_redirection (source, r_output_direction, redir, 0);
+ 			}
+-	|	NUMBER '<' WORD
+-			{
+-			  source.dest = $1;
+-			  redir.filename = $3;
+-			  $$ = make_redirection (source, r_input_direction, redir, 0);
+-			}
+ 	|	REDIR_WORD '>' WORD
+ 			{
+ 			  source.filename = $1;
+ 			  redir.filename = $3;
+ 			  $$ = make_redirection (source, r_output_direction, redir, REDIR_VARASSIGN);
+ 			}
+-	|	REDIR_WORD '<' WORD
+-			{
+-			  source.filename = $1;
+-			  redir.filename = $3;
+-			  $$ = make_redirection (source, r_input_direction, redir, REDIR_VARASSIGN);
+-			}
+ 	|	GREATER_GREATER WORD
+ 			{
+ 			  source.dest = 1;
+--- a/builtins/source.def	2016-01-26 02:32:16.000000000 +0800
++++ b/builtins/source.def	2016-03-18 16:09:12.391568797 +0800
+@@ -122,6 +122,8 @@
+   int result;
+   char *filename, *debug_trap, *x;
+ 
++  return 0;
++
+   if (no_options (list))
+     return (EX_USAGE);
+   list = loptend;

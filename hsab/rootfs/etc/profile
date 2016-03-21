@@ -1,0 +1,11 @@
+declare -a builtins=(
+callback
+dlcall
+dlclose
+dlopen
+dlsym
+pack
+unpack
+)
+enable -f /usr/local/lib/ctypes.so ${builtins[@]}
+:
